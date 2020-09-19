@@ -1,9 +1,7 @@
 const path = require('path');
 
 module.exports = {
-    entry: {
-        main: './src/main.js'
-    },
+    entry: ['./src/main.ts'],
     mode: 'development',
     output: {
         filename: '[name]-bundle.js',
@@ -14,8 +12,32 @@ module.exports = {
         contentBase: 'dist', // !!! папка со статическими файлами !!!
         overlay: true // показать фон с ошибкой
     },
+    resolve: {
+        extensions: [ '.tsx', '.ts', '.js' ],
+    },
     module: {
         rules: [
+            {
+                test: /\.ts(x?)$/,
+                use: [
+                    {
+                        loader: 'babel-loader'
+                    },
+                    {
+                        loader: 'ts-loader'
+                    }
+                ],
+                exclude: /node_modules/
+            },
+            {
+                test: /\.js$/,
+                use: [
+                    {
+                        loader: 'babel-loader'
+                    }
+                ],
+                exclude: /node_modules/
+            },
             {
                 test: /\.css$/,
                 use: [
