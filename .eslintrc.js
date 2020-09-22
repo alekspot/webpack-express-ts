@@ -33,7 +33,8 @@ module.exports = {
             'error',
             'always'
         ],
-        'keyword-spacing': 2
+        'keyword-spacing': 2,
+        '@typescript-eslint/no-var-requires': 0
     },
     'ignorePatterns': ['dist'],
 };

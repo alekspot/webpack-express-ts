@@ -27,3 +27,12 @@ h1 {
     font-family: sans-serif;
     text-shadow: 0 0 20px black;
 }
+
+.r {
+    &:hover {
+        fill: red;
+    }
+    
+}
+
+@import 'scss/test/t.scss';

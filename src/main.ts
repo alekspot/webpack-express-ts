@@ -1,6 +1,8 @@
-import './index.html';
-import './main.css';
+import './main.scss';
 
-const a = async () => {
-    await console.log('a');
-};
+
+import './assets/svg/twitter.svg';
+import './assets/svg/facebook.svg';
+
+//для hot перезагрузки html
+//import './index.html';

@@ -1,25 +1,18 @@
 const path = require('path');
-const webpack = require('webpack');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const SvgStorePlugin = require('external-svg-sprite-loader');
 
 module.exports = {
-    mode: 'development',
-    entry: ['webpack-hot-middleware/client?reload=true','./src/main.ts'],
+    mode: 'production',
+    entry: ['./src/main.ts'],
+    
     output: {
-        filename: '[name]-bundle.js',
+        filename: 'bundle.[chunkhash].js',
         path: path.resolve(__dirname, '../dist'),
         publicPath: '/'
-    },
-    devServer: {
-        contentBase: 'dist', // !!! папка со статическими файлами !!!
-        overlay: true, // показать фон с ошибкой
-        hot: true 
-    },
-    resolve: {
-        extensions: [ '.tsx', '.ts', '.js' ],
     },
     module: {
         rules: [
@@ -46,9 +39,7 @@ module.exports = {
             },
             {
                 test: /\.scss|css$/,
-                use: [
-                    'style-loader', 'css-loader', 'sass-loader'
-                ]
+                use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
             },
             {
                 test: /\.html$/,
@@ -64,14 +55,14 @@ module.exports = {
                     {
                         loader: 'file-loader',
                         options: {
-                            name: '/assets/images/[name]-[hash:8].[ext]'
+                            name: 'images/[name]-[hash:8].[ext]'
                         }
                     }
                 ]
             },
             {
                 test: /\.svg$/,
-                loader: SvgStorePlugin.loader, //извлекает svg в спрайт (даже в css)
+                loader: SvgStorePlugin.loader,
                 options: {
                     name: 'sprite.svg',
                     iconName: '[name]'
@@ -80,19 +71,18 @@ module.exports = {
         ]
     },
     plugins: [
-        new webpack.HotModuleReplacementPlugin(),
+        new CleanWebpackPlugin(),
         new SvgStorePlugin(),
-        new CopyWebpackPlugin({
-            patterns: [
-                { from: path.resolve(__dirname, '../src/assets/images'), to: 'assets/images' }
-            ],
-        }),
         new HTMLWebpackPlugin({
             template: './src/index.html'
         }),
+        new CopyWebpackPlugin({
+            patterns: [
+                { from: path.resolve(__dirname, '../src/assets/images'), to: 'assets/images' }
+            ]
+        }),
         new MiniCssExtractPlugin({
             filename: 'styles.[chunkhash].css'
-        }),
-        
+        })
     ]
 };

@@ -1,12 +1,13 @@
 {   
     "presets": [
+        "@babel/preset-typescript",
         [
-            "@babel/env",
+            "@babel/preset-env",
             {   
                 "targets": {
                     "browsers": ["last 2 versions"]
                 },
-                "debug": true
+                "debug": false
             }
         ]
     ]
